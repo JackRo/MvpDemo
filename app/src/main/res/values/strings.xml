@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MvpDemo</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="login">登录</string>
+
+    <string name="dialog_title_warm_tip">温馨提示</string>
+    <string name="dialog_go_to_app_settings">去设置</string>
+</resources>
