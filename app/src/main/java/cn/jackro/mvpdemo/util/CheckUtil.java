@@ -5,8 +5,7 @@ import android.text.TextUtils;
 import java.util.List;
 
 /**
- * Created by jack on 2017/3/5.
- * Email: zhuochangjing@foxmail.com
+ * CheckUtil
  */
 public final class CheckUtil {
 

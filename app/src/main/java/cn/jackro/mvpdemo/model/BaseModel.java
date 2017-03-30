@@ -14,6 +14,7 @@ public class BaseModel {
     protected ApiService mApiService;
 
     public BaseModel() {
+        Api.setBaseUrl("xxx");
         mApiService = Api.getInstance().getApiService();
     }
 

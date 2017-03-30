@@ -10,7 +10,6 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 /**
  * Toast Util
- * Created by jack on 2017/1/4.
  */
 public class ToastUtil {
 
