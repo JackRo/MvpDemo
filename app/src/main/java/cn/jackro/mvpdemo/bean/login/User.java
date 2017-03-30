@@ -4,9 +4,7 @@ import cn.jackro.mvpdemo.bean.HttpResult;
 
 /**
  * User bean
- * Created by jack on 2017/3/29.
  */
-
 public class User extends HttpResult {
     /**
      * 客户id

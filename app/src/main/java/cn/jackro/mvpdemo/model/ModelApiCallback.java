@@ -1,32 +1,29 @@
 package cn.jackro.mvpdemo.model;
 
 /**
- * api request callback
- * Created by jack on 2016/12/21.
+ * 用于传递RxJava的回调给Presenter层的接口，对应RxJava的各种回调
+ *
+ * @param <T> 网络请求成功json解析的java bean类型
  */
 public interface ModelApiCallback<T> {
 
     /**
-     * callback before request start
+     * 对应RxJava的onStart回调
      */
     void onStart();
 
     /**
-     * request success callback
-     *
-     * @param model request data model
+     * 对应RxJava的onNext回调
      */
     void onNext(T model);
 
     /**
-     * request error callback
-     *
-     * @param e  error exception
+     * 对应RxJava的onError回调
      */
     void onError(Throwable e);
 
     /**
-     * request callback
+     * 对应RxJava的onCompleted回调
      */
     void onCompleted();
 }

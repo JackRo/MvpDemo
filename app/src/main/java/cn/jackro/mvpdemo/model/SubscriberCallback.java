@@ -3,8 +3,10 @@ package cn.jackro.mvpdemo.model;
 import rx.Subscriber;
 
 /**
- * Subscribe callback
- * Created by jack on 2016/12/21.
+ * RxJava的{@link Subscriber}回调，传递RxJava回调给{@link ModelApiCallback}，让
+ * {@link ModelApiCallback}把RxJava的回调传递给Presenter层
+ *
+ * @param <T> 网络请求成功json解析的java bean类型
  */
 public class SubscriberCallback<T> extends Subscriber<T> {
 

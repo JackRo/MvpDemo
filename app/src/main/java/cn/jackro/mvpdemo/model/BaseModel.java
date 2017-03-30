@@ -8,14 +8,12 @@ import rx.schedulers.Schedulers;
 
 /**
  * BaseModel
- * Created by jack on 2017/3/29.
  */
 public class BaseModel {
 
     protected ApiService mApiService;
 
     public BaseModel() {
-        System.out.println("调用了BaseModel");
         mApiService = Api.getInstance().getApiService();
     }
 

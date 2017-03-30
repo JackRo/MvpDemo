@@ -1,17 +1,13 @@
 package cn.jackro.mvpdemo.presenter;
 
 
-import android.util.Log;
-
 import cn.jackro.mvpdemo.model.ModelApiCallback;
 import cn.jackro.mvpdemo.ui.IBaseView;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * MVP's P layer's super class, implement view's add and remove,
- * RxJava's subscribe management
- * Created by jack on 2016/12/22.
+ * MVP的P层超类，实现attachView和detachView，以管理RxJava的订阅对象
  */
 public class BasePresenter implements Presenter<IBaseView> {
 
@@ -26,24 +22,23 @@ public class BasePresenter implements Presenter<IBaseView> {
 
     @Override
     public void detachView() {
-        Log.e(getClass().toString(), "detachView");
+        //取消订阅以取消网络请求
         unsubscribe();
     }
 
     /**
-     * unsubscribe all, avoid memory leak
+     * 取消订阅，避免内存泄露
      */
     private void unsubscribe() {
         if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
-            Log.e(getClass().toString(), "unsubscribe");
             mCompositeSubscription.clear();
         }
     }
 
     /**
-     * add the subscription to the CompositeSubscription，convenient for unsubscribe
+     * 添加{@link Subscription}到mCompositeSubscription，以方便取消订阅
      *
-     * @param subscription {@link Subscription}
+     * @param subscription {@link Subscription}实例
      */
     protected void addSubscription(Subscription subscription) {
         if (mCompositeSubscription == null) {
@@ -52,27 +47,40 @@ public class BasePresenter implements Presenter<IBaseView> {
         mCompositeSubscription.add(subscription);
     }
 
+    /**
+     * 传递{@link ModelApiCallback}的回调给View层
+     *
+     * @param <T> 网络请求成功json解析的java bean类型
+     */
     public class BaseModelApiCallback<T> implements ModelApiCallback<T> {
 
         @Override
         public void onStart() {
-            mvpView.onRxStart();
+            if (mvpView != null) {
+                mvpView.onRxStart();
+            }
         }
 
         @SuppressWarnings("unchecked")
         @Override
         public void onNext(T model) {
-            mvpView.onNext(model);
+            if (mvpView != null) {
+                mvpView.onNext(model);
+            }
         }
 
         @Override
         public void onError(Throwable e) {
-            mvpView.onError(e);
+            if (mvpView != null) {
+                mvpView.onError(e);
+            }
         }
 
         @Override
         public void onCompleted() {
-            mvpView.onComplete();
+            if (mvpView != null) {
+                mvpView.onComplete();
+            }
         }
     }
 }

@@ -8,7 +8,6 @@ import rx.Subscription;
 
 /**
  * LoginModel
- * Created by jack on 2017/3/29.
  */
 public class LoginModel extends BaseModel {
 

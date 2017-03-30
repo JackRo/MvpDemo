@@ -1,8 +1,7 @@
 package cn.jackro.mvpdemo.ui;
 
 /**
- * MVP's V layer, super interface
- * Created by jack on 2016/12/23.
+ * MVP的view层接口，用于Rx接口回调
  */
 public interface IBaseView<T> {
     void onRxStart();

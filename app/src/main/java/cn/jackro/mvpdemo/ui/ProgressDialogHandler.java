@@ -10,7 +10,6 @@ import cn.jackro.mvpdemo.presenter.BasePresenter;
 
 /**
  * ProgressDialogHandler
- * Created by jack on 2016/12/26.
  */
 class ProgressDialogHandler extends Handler {
 
@@ -37,7 +36,7 @@ class ProgressDialogHandler extends Handler {
     }
 
     /**
-     * init the mProgressDialog and show it
+     * 初始化mProgressDialog并显示它
      */
     private void initProgressDialog() {
         if (mContext != null && mProgressDialog == null) {
@@ -62,7 +61,7 @@ class ProgressDialogHandler extends Handler {
     }
 
     /**
-     * dismiss the mProgressDialog
+     * 关闭mProgressDialog
      */
     private void dismissProgressDialog() {
         if (mProgressDialog != null) {

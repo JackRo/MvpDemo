@@ -4,7 +4,6 @@ import cn.jackro.mvpdemo.util.RetrofitUtil;
 
 /**
  * Api
- * Created by jack on 2017/3/29.
  */
 class Api {
     private ApiService mApiService;

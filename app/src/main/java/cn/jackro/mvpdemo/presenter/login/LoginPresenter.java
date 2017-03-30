@@ -7,7 +7,6 @@ import cn.jackro.mvpdemo.ui.IBaseView;
 
 /**
  * LoginPresenter
- * Created by jack on 2017/3/29.
  */
 public class LoginPresenter extends BasePresenter {
 

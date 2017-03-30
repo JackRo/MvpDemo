@@ -3,8 +3,7 @@ package cn.jackro.mvpdemo;
 import android.app.Application;
 
 /**
- * Application, used to init resource
- * Created by jack on 2017/3/29.
+ * Application, 用于初始化资源等
  */
 
 public class MyApp extends Application {

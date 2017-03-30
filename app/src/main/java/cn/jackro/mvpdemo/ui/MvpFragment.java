@@ -20,8 +20,10 @@ import cn.jackro.mvpdemo.util.ToastUtil;
 
 
 /**
- * MVP's Fragment, hold the instance of Presenter that handle business logic
- * Created by jack on 2017/1/5.
+ * <p>
+ * MvpFragment，持有{@link BasePresenter}的List，用于处理网络请求的业务逻辑，不同的{@link BasePresenter}
+ * 实例处理不同的网络请求业务。
+ * <p/>
  */
 public abstract class MvpFragment extends BaseFragment implements ProgressCancelListener {
 
@@ -183,11 +185,10 @@ public abstract class MvpFragment extends BaseFragment implements ProgressCancel
     }
 
     /**
-     * show ProgressDialog
+     * 显示ProgressDialog
      *
-     * @param msg       the message of ProgressDialog
-     * @param presenter the Presenter of handle ui logistic and business logistic. because it handle slowly , so we
-     *                  need to show a ProgressDialog
+     * @param msg       设置ProgressDialog的message
+     * @param presenter 传递BasePresenter实例给ProgressDialogHandler以实现手动取消ProgressDialog取消网络请求
      */
     protected void showProgressDialog(String msg, BasePresenter presenter) {
         if (mProgressDialogHandler == null) {
@@ -197,7 +198,7 @@ public abstract class MvpFragment extends BaseFragment implements ProgressCancel
     }
 
     /**
-     * dismiss ProgressDialog
+     * 关闭ProgressDialog
      */
     protected void dismissProgressDialog() {
         if (mProgressDialogHandler != null) {

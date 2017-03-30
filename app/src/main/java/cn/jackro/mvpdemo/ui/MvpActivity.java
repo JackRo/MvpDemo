@@ -152,11 +152,10 @@ public abstract class MvpActivity extends BaseActivity implements ProgressCancel
     }
 
     /**
-     * show ProgressDialog
+     * 显示ProgressDialog
      *
-     * @param msg       the message of ProgressDialog
-     * @param presenter the Presenter of handle ui logistic and business logistic. because it handle slowly , so we
-     *                  need to show a ProgressDialog
+     * @param msg       设置ProgressDialog的message
+     * @param presenter 传递BasePresenter实例给ProgressDialogHandler以实现手动取消ProgressDialog取消网络请求
      */
     protected void showProgressDialog(String msg, BasePresenter presenter) {
         if (mProgressDialogHandler == null) {
@@ -168,7 +167,7 @@ public abstract class MvpActivity extends BaseActivity implements ProgressCancel
     }
 
     /**
-     * dismiss ProgressDialog
+     * 关闭ProgressDialog
      */
     protected void dismissProgressDialog() {
         if (mProgressDialogHandler != null) {

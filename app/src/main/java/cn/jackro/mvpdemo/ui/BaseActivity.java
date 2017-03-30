@@ -22,10 +22,6 @@ import cn.jackro.mvpdemo.R;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    /**
-     * the data that transfer between two activity,
-     * you could get data by this field in your activity
-     */
     protected Intent mExtraDataIntent;
 
     protected Activity mActivity;
@@ -52,28 +48,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
     }
 
-    /**
-     * set the layoutResID of Activity
-     *
-     * @return return the layoutResID
-     */
     protected abstract int getLayoutResourceId();
 
-    /**
-     * init the UI views of Activity
-     */
     protected abstract void initView();
 
-    /**
-     * init the Toolbar of Activity, you also could not override the method,
-     * because maybe you don't need the Toolbar
-     */
     protected void initToolbar() {
     }
 
-    /**
-     * init the UI views's data of Activity
-     */
     protected void initData() {
 
     }
