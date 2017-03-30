@@ -1,6 +1,6 @@
-#android MVP 模式demo
+# android MVP 模式demo
 
-###使用了以下框架：
+### 使用了以下框架：
 
 1. RxJava 1.x，[RxJava](https://github.com/ReactiveX/RxJava)
 2. Retrofit 2.x，[Retrofit](https://github.com/square/retrofit)
