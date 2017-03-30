@@ -3,25 +3,45 @@ package cn.jackro.mvpdemo.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
+import butterknife.BindView;
+import cn.jackro.mvpdemo.R;
 import cn.jackro.mvpdemo.presenter.BasePresenter;
 import cn.jackro.mvpdemo.util.CheckUtil;
 import cn.jackro.mvpdemo.util.ToastUtil;
 
 /**
- * MVP's Activity, hold the instance of Presenter that handle business logic
- * Created by jack on 2016/12/22.
+ * <p>
+ * MvpActivity，持有{@link BasePresenter}的List，用于处理网络请求的业务逻辑，不同的{@link BasePresenter}
+ * 实例处理不同的网络请求业务。
+ * <p/>
  */
 public abstract class MvpActivity extends BaseActivity implements ProgressCancelListener {
 
     protected List<BasePresenter> mPresenterList;
 
     protected ProgressDialogHandler mProgressDialogHandler;
+
+    @BindView(R.id.loading_progressbar)
+    ProgressBar mLoadingProgressbar;
+    @BindView(R.id.error_text_view)
+    TextView mErrorTextView;
+
+    @BindString(R.string.socket_timeout_exception_str)
+    String mSocketTimeOutExceptionStr;
+    @BindString(R.string.connect_exception_str)
+    String mConnectExceptionStr;
+    @BindString(R.string.server_unknown_exception_str)
+    String mServerUnknownExceptionStr;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,11 +59,25 @@ public abstract class MvpActivity extends BaseActivity implements ProgressCancel
         }
     }
 
+    /**
+     * <p>初始化mPresenterList</p>
+     *
+     * <p>子类覆盖这个方法必须调用父类的方法以初始化mPresenterList</p>
+     */
     protected void initPresenterList() {
         mPresenterList = new ArrayList<>();
     }
 
-    abstract class BaseView<T> implements IBaseView<T> {
+    /**
+     * <p>
+     * view层的抽象类，在这里统一处理错误(错误以Toast形式显示)，处理ProgressDialog的显示和关闭。
+     * 你可以在{@link MvpActivity}的子类Activity实现这个抽象类，
+     * 并且你可以做自己的Rx回调实现，甚至覆盖这个抽象类的实现都可以。
+     * <p/>
+     *
+     * @param <T> 网络请求数据类型
+     */
+    abstract class BaseView0<T> implements IBaseView<T> {
 
         public abstract BasePresenter getPresenter();
 
@@ -68,11 +102,51 @@ public abstract class MvpActivity extends BaseActivity implements ProgressCancel
         public void onError(Throwable e) {
             dismissProgressDialog();
             if (e instanceof SocketTimeoutException) {
-                ToastUtil.showShort("网络连接超时，请检查网络或稍后再试");
+                ToastUtil.showShort(mSocketTimeOutExceptionStr);
             } else if (e instanceof ConnectException) {
-                ToastUtil.showShort("网络错误，请检查网络或稍后再试");
+                ToastUtil.showShort(mConnectExceptionStr);
             } else {
-                ToastUtil.showShort(e.getMessage());
+                ToastUtil.showShort(mServerUnknownExceptionStr);
+            }
+        }
+    }
+
+    /**
+     * <p>
+     * view层的抽象类，在这里统一处理错误(错误以ErrorView的形式显示)，处理ProgressBar的显示和隐藏。
+     * 你可以在{@link MvpActivity}的子类Activity实现这个抽象类，
+     * 并且你可以做自己的Rx回调实现，甚至覆盖这个抽象类的实现都可以。
+     * <p/>
+     *
+     * @param <T> 网络请求解析的java bean类型
+     */
+    abstract class BaseView1<T> implements IBaseView<T> {
+
+        @Override
+        public void onRxStart() {
+            mLoadingProgressbar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onNext(T t) {
+
+        }
+
+        @Override
+        public void onComplete() {
+            mLoadingProgressbar.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            mLoadingProgressbar.setVisibility(View.GONE);
+            mErrorTextView.setVisibility(View.VISIBLE);
+            if (e instanceof SocketTimeoutException) {
+                mErrorTextView.setText(mSocketTimeOutExceptionStr);
+            } else if (e instanceof ConnectException) {
+                mErrorTextView.setText(mConnectExceptionStr);
+            } else {
+                mErrorTextView.setText(mServerUnknownExceptionStr);
             }
         }
     }
@@ -106,6 +180,7 @@ public abstract class MvpActivity extends BaseActivity implements ProgressCancel
     @Override
     public void onCancelProgress(BasePresenter presenter) {
         mProgressDialogHandler = null;
+        //调用这个方法以取消网络请求
         presenter.detachView();
     }
 }

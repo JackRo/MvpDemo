@@ -36,7 +36,6 @@ public class BasePresenter implements Presenter<IBaseView> {
     private void unsubscribe() {
         if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
             Log.e(getClass().toString(), "unsubscribe");
-//            mCompositeSubscription.unsubscribe();
             mCompositeSubscription.clear();
         }
     }

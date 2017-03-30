@@ -1,6 +1,7 @@
 package cn.jackro.mvpdemo.ui;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 
 import butterknife.BindView;
@@ -37,7 +38,7 @@ public class MainActivity extends MvpActivity {
     @Override
     protected void initPresenterList() {
         super.initPresenterList();
-        mLoginPresenter = new LoginPresenter(new LoginView());
+        mLoginPresenter = new LoginPresenter(new LoginView1());
         mPresenterList.add(mLoginPresenter);
     }
 
@@ -46,7 +47,7 @@ public class MainActivity extends MvpActivity {
         mLoginPresenter.login(mUsernameEditText.getText().toString(), mPasswordEditText.getText().toString());
     }
 
-    private class LoginView extends BaseView<User> {
+    private class LoginView0 extends BaseView0<User> {
 
         @Override
         public BasePresenter getPresenter() {
@@ -62,6 +63,15 @@ public class MainActivity extends MvpActivity {
         public void onNext(User user) {
             super.onNext(user);
             Log.e("User", user.msg + user.code);
+        }
+    }
+
+    private class LoginView1 extends BaseView1<User> {
+        @Override
+        public void onNext(User user) {
+            super.onNext(user);
+            mErrorTextView.setVisibility(View.VISIBLE);
+            mErrorTextView.setText(user.msg);
         }
     }
 }

@@ -6,4 +6,7 @@
 
     <string name="dialog_title_warm_tip">温馨提示</string>
     <string name="dialog_go_to_app_settings">去设置</string>
+    <string name="socket_timeout_exception_str">网络连接超时，请检查网络或稍后再试</string>
+    <string name="connect_exception_str">网络错误，请检查网络或稍后再试</string>
+    <string name="server_unknown_exception_str">服务器出现未知异常</string>
 </resources>

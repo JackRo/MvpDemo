@@ -19,7 +19,6 @@ import cn.jackro.mvpdemo.R;
 
 /**
  * BaseActivity
- * Created by jack on 2016/12/21.
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
