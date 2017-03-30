@@ -2,7 +2,6 @@ package cn.jackro.mvpdemo.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,15 +18,18 @@ import cn.jackro.mvpdemo.presenter.BasePresenter;
 import cn.jackro.mvpdemo.util.CheckUtil;
 import cn.jackro.mvpdemo.util.ToastUtil;
 
+
 /**
- * <p>
- * MvpActivity，持有{@link BasePresenter}的List，用于处理网络请求的业务逻辑，不同的{@link BasePresenter}
- * 实例处理不同的网络请求业务。
- * <p/>
+ * MVP's Fragment, hold the instance of Presenter that handle business logic
+ * Created by jack on 2017/1/5.
  */
-public abstract class MvpActivity extends BaseActivity implements ProgressCancelListener {
+public abstract class MvpFragment extends BaseFragment implements ProgressCancelListener {
 
     protected List<BasePresenter> mPresenterList;
+
+    protected boolean mIsVisibleToUser;
+
+    protected boolean mIsViewPrepared;
 
     protected ProgressDialogHandler mProgressDialogHandler;
 
@@ -44,14 +46,33 @@ public abstract class MvpActivity extends BaseActivity implements ProgressCancel
     String mServerUnknownExceptionStr;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
         initPresenterList();
-        super.onCreate(savedInstanceState);
+        if (getUserVisibleHint()) {
+            mIsVisibleToUser = true;
+            onVisible();
+        } else {
+            mIsVisibleToUser = false;
+            onInvisible();
+        }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mIsViewPrepared = true;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        lazyLoad();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
         if (CheckUtil.isListNotNull(mPresenterList)) {
             for (BasePresenter presenter : mPresenterList) {
                 presenter.detachView();
@@ -59,9 +80,19 @@ public abstract class MvpActivity extends BaseActivity implements ProgressCancel
         }
     }
 
+    protected abstract void lazyLoad();
+
+    public void onVisible() {
+        lazyLoad();
+    }
+
+    public void onInvisible() {
+
+    }
+
     /**
      * <p>初始化mPresenterList</p>
-     *
+     * <p>
      * <p>子类覆盖这个方法必须调用父类的方法以初始化mPresenterList</p>
      */
     protected void initPresenterList() {
@@ -77,7 +108,7 @@ public abstract class MvpActivity extends BaseActivity implements ProgressCancel
      *
      * @param <T> 网络请求解析的java bean类型
      */
-    abstract class BaseView0<T> implements IBaseView<T> {
+    abstract class BaseView2<T> implements IBaseView<T> {
 
         public abstract BasePresenter getPresenter();
 
@@ -120,7 +151,7 @@ public abstract class MvpActivity extends BaseActivity implements ProgressCancel
      *
      * @param <T> 网络请求解析的java bean类型
      */
-    abstract class BaseView1<T> implements IBaseView<T> {
+    abstract class BaseView3<T> implements IBaseView<T> {
 
         @Override
         public void onRxStart() {
@@ -162,8 +193,6 @@ public abstract class MvpActivity extends BaseActivity implements ProgressCancel
         if (mProgressDialogHandler == null) {
             mProgressDialogHandler = new ProgressDialogHandler(mActivity, true, this, msg, presenter);
         }
-        Log.e(getClass().toString(), mProgressDialogHandler.toString());
-
         mProgressDialogHandler.obtainMessage(ProgressDialogHandler.SHOW_PROGRESS_DIALOG).sendToTarget();
     }
 
