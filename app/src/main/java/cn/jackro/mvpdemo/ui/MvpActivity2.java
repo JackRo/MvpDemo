@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -55,7 +56,7 @@ public abstract class MvpActivity2 extends MvpActivity {
             showErrorView();
             if (e instanceof SocketTimeoutException) {
                 setErrorMsg(mSocketTimeOutExceptionStr);
-            } else if (e instanceof ConnectException) {
+            } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
                 setErrorMsg(mConnectExceptionStr);
             } else {
                 errorViewShowServerUnknownException();

@@ -4,6 +4,7 @@ import android.widget.Toast;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 import cn.jackro.mvpdemo.presenter.BasePresenter;
 import cn.jackro.mvpdemo.util.ToastUtil;
@@ -52,7 +53,7 @@ public abstract class MvpActivity1 extends MvpActivity implements ProgressCancel
             dismissProgressDialog();
             if (e instanceof SocketTimeoutException) {
                 ToastUtil.showShort(mSocketTimeOutExceptionStr);
-            } else if (e instanceof ConnectException) {
+            } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
                 ToastUtil.showShort(mConnectExceptionStr);
             } else {
                 toastShowServerUnknownException();
