@@ -11,7 +11,7 @@ import cn.jackro.mvpdemo.presenter.BasePresenter;
 /**
  * ProgressDialogHandler
  */
-class ProgressDialogHandler extends Handler {
+public class ProgressDialogHandler extends Handler {
 
     static final int SHOW_PROGRESS_DIALOG = 1;
     static final int DISMISS_PROGRESS_DIALOG = 2;

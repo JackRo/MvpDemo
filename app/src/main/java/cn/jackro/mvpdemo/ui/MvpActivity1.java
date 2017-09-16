@@ -11,7 +11,7 @@ import cn.jackro.mvpdemo.util.ToastUtil;
 
 /**
  * <p>
- * 数据加载出错时使用@{@link Toast}展示
+ * 数据加载出错时使用{@link Toast}展示
  * </p>
  */
 public abstract class MvpActivity1 extends MvpActivity implements ProgressCancelListener {

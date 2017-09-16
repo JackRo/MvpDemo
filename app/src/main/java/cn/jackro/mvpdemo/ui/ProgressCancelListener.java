@@ -5,7 +5,7 @@ import cn.jackro.mvpdemo.presenter.BasePresenter;
 /**
  * 手动取消ProgressDialog回调
  */
-interface ProgressCancelListener {
+public interface ProgressCancelListener {
 
     /**
      * 取消ProgressDialog回调方法

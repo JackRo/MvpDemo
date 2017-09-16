@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Tip: 使用这个类，你必须调用{@link #setBaseUrl(String)}设置它的BASE_URL
  * </p>
  */
-class Api {
+public class Api {
 
     private static String BASE_URL;
 
