@@ -13,6 +13,7 @@ android {
     }
     buildTypes {
         debug {
+            compileSdkVersion 24
             buildConfigField 'java.lang.Boolean', 'IS_DEBUG', 'true'
         }
         release {
