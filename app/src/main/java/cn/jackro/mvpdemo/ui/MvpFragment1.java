@@ -2,10 +2,6 @@ package cn.jackro.mvpdemo.ui;
 
 import android.widget.Toast;
 
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
-
 import cn.jackro.mvpdemo.presenter.BasePresenter;
 import cn.jackro.mvpdemo.util.ToastUtil;
 
@@ -25,41 +21,40 @@ public abstract class MvpFragment1 extends MvpFragment implements ProgressCancel
      * 并且你可以做自己的Rx回调实现，甚至覆盖这个抽象类的实现都可以。
      * <p/>
      *
-     * @param <T> 网络请求解析的java bean类型
      */
-    public abstract class BaseView1<T> implements IBaseView<T> {
-
-        public abstract BasePresenter getPresenter();
-
-        public abstract String getProgressDialogMsg();
-
-        @Override
-        public void onRxStart() {
-            showProgressDialog(getProgressDialogMsg(), getPresenter());
-        }
-
-        @Override
-        public void onNext(T t) {
-
-        }
-
-        @Override
-        public void onComplete() {
-            dismissProgressDialog();
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            dismissProgressDialog();
-            if (e instanceof SocketTimeoutException) {
-                ToastUtil.showShort(mSocketTimeOutExceptionStr);
-            } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
-                ToastUtil.showShort(mConnectExceptionStr);
-            } else {
-                toastShowServerUnknownException();
-            }
-        }
-    }
+    //public abstract class BaseView1<T> implements IBaseView<T> {
+    //
+    //    public abstract BasePresenter getPresenter();
+    //
+    //    public abstract String getProgressDialogMsg();
+    //
+    //    @Override
+    //    public void onRxStart() {
+    //        showProgressDialog(getProgressDialogMsg(), getPresenter());
+    //    }
+    //
+    //    @Override
+    //    public void onNext(T t) {
+    //
+    //    }
+    //
+    //    @Override
+    //    public void onComplete() {
+    //        dismissProgressDialog();
+    //    }
+    //
+    //    @Override
+    //    public void onError(Throwable e) {
+    //        dismissProgressDialog();
+    //        if (e instanceof SocketTimeoutException) {
+    //            ToastUtil.showShort(mSocketTimeOutExceptionStr);
+    //        } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
+    //            ToastUtil.showShort(mConnectExceptionStr);
+    //        } else {
+    //            toastShowServerUnknownException();
+    //        }
+    //    }
+    //}
 
     /**
      * Toast显示服务器出现未知异常的信息
@@ -95,6 +90,6 @@ public abstract class MvpFragment1 extends MvpFragment implements ProgressCancel
     public void onCancelProgress(BasePresenter presenter) {
         mProgressDialogHandler = null;
         //调用这个方法以取消网络请求
-        presenter.detachView();
+        presenter.detach();
     }
 }

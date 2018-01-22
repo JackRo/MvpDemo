@@ -66,7 +66,7 @@ public abstract class MvpFragment extends BaseFragment {
         super.onDetach();
         if (CheckUtil.isListNotNull(mPresenterList)) {
             for (BasePresenter presenter : mPresenterList) {
-                presenter.detachView();
+                presenter.detach();
             }
         }
     }

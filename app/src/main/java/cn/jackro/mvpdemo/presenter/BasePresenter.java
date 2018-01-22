@@ -1,27 +1,43 @@
 package cn.jackro.mvpdemo.presenter;
 
 
-import cn.jackro.mvpdemo.model.ModelApiCallback;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.OnLifecycleEvent;
+
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+
 import cn.jackro.mvpdemo.ui.IBaseView;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * MVP的P层超类，实现attachView和detachView，以管理RxJava的订阅对象
  */
-public class BasePresenter implements Presenter<IBaseView> {
+public class BasePresenter implements LifecycleObserver {
 
-    private IBaseView mvpView;
+    private CompositeDisposable mCompositeDisposable;
 
-    private CompositeSubscription mCompositeSubscription;
+    @SuppressWarnings("FieldCanBeLocal")
+    private IBaseView mIBaseView;
 
-    @Override
-    public void attachView(IBaseView view) {
-        mvpView = view;
+    public BasePresenter(IBaseView IBaseView) {
+        mIBaseView = IBaseView;
+        if (mIBaseView instanceof LifecycleOwner) {
+            ((LifecycleOwner) mIBaseView).getLifecycle().addObserver(this);
+        }
     }
 
-    @Override
-    public void detachView() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    public void initData() {
+        initLoadData();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    public void detach() {
         //取消订阅以取消网络请求
         unsubscribe();
     }
@@ -30,57 +46,34 @@ public class BasePresenter implements Presenter<IBaseView> {
      * 取消订阅，避免内存泄露
      */
     private void unsubscribe() {
-        if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
-            mCompositeSubscription.clear();
+        if (mCompositeDisposable != null && mCompositeDisposable.size() > 0) {
+            mCompositeDisposable.clear();
         }
     }
 
-    /**
-     * 添加{@link Subscription}到mCompositeSubscription，以方便取消订阅
-     *
-     * @param subscription {@link Subscription}实例
-     */
-    protected void addSubscription(Subscription subscription) {
-        if (mCompositeSubscription == null) {
-            mCompositeSubscription = new CompositeSubscription();
-        }
-        mCompositeSubscription.add(subscription);
+    protected void initLoadData() {
+
     }
 
     /**
-     * 传递{@link ModelApiCallback}的回调给View层
+     * 添加{@link Disposable}到mCompositeDisposable，以方便取消订阅
      *
-     * @param <T> 网络请求成功json解析的java bean类型
+     * @param disposable {@link Disposable}实例
      */
-    public class BaseModelApiCallback<T> implements ModelApiCallback<T> {
-
-        @Override
-        public void onStart() {
-            if (mvpView != null) {
-                mvpView.onRxStart();
-            }
+    protected void addDisposable(Disposable disposable) {
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = new CompositeDisposable();
         }
+        mCompositeDisposable.add(disposable);
+    }
 
-        @SuppressWarnings("unchecked")
-        @Override
-        public void onNext(T model) {
-            if (mvpView != null) {
-                mvpView.onNext(model);
-            }
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            if (mvpView != null) {
-                mvpView.onError(e);
-            }
-        }
-
-        @Override
-        public void onCompleted() {
-            if (mvpView != null) {
-                mvpView.onComplete();
-            }
+    protected void onError(Throwable e) {
+        if (e instanceof SocketTimeoutException) {
+            mIBaseView.showSocketTimeoutExceptionMsg();
+        } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
+            mIBaseView.showNetworkConnectExceptionMsg();
+        } else {
+            mIBaseView.showServerUnknownExceptionMsg();
         }
     }
 }

@@ -39,7 +39,7 @@ public abstract class MvpActivity extends BaseActivity {
         super.onDestroy();
         if (CheckUtil.isListNotNull(mPresenterList)) {
             for (BasePresenter presenter : mPresenterList) {
-                presenter.detachView();
+                presenter.detach();
             }
         }
     }
