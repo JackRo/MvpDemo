@@ -3,12 +3,11 @@ package cn.jackro.mvpdemo.ui;
 /**
  * MVP的view层接口，用于Rx接口回调
  */
-public interface IBaseView<T> {
-    void onRxStart();
+public interface IBaseView {
 
-    void onComplete();
+    void showSocketTimeoutExceptionMsg();
 
-    void onError(Throwable e);
+    void showNetworkConnectExceptionMsg();
 
-    void onNext(T t);
+    void showServerUnknownExceptionMsg();
 }

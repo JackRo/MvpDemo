@@ -11,7 +11,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -78,17 +78,13 @@ public class Api {
 
     private Retrofit getRetrofit() {
 
-        //region 测试单例模式的mOkHttpClient是否是同一个对象
-        System.out.println(BASE_URL);
-        System.out.println(mOkHttpClient.toString());
-        //endregion
 
         //Retrofit config
         return new Retrofit.Builder()
                 .client(mOkHttpClient)
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 

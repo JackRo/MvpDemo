@@ -45,7 +45,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         initToolbar();
         initView();
-        initData();
     }
 
     protected abstract int getLayoutResourceId();
@@ -53,10 +52,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void initView();
 
     protected void initToolbar() {
-    }
-
-    protected void initData() {
-
     }
 
     @Override
