@@ -1,5 +1,7 @@
 package cn.jackro.mvpdemo.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -132,7 +134,10 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     @Override
     public void onItemClick(View view, int position) {
-
+        AndroidResult androidResult = mAndroidAdapter.getList().get(position);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(androidResult.getUrl()));
+        startActivity(intent);
     }
 
     @Override
