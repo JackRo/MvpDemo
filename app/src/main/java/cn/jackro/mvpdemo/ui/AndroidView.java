@@ -17,7 +17,4 @@ public interface AndroidView extends IBaseView {
 
     void onComplete();
 
-    void showLoading();
-
-    void stopLoading();
 }

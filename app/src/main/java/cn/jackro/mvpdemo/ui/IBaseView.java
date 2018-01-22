@@ -5,9 +5,17 @@ package cn.jackro.mvpdemo.ui;
  */
 public interface IBaseView {
 
-    void showSocketTimeoutExceptionMsg();
+    //void showSocketTimeoutExceptionMsg();
+    //
+    //void showNetworkConnectExceptionMsg();
+    //
+    //void showServerUnknownExceptionMsg();
 
-    void showNetworkConnectExceptionMsg();
+    void showErrorView(String msg);
 
-    void showServerUnknownExceptionMsg();
+    void showErrorToast(String msg);
+
+    void showLoading();
+
+    void stopLoading();
 }

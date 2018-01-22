@@ -2,6 +2,9 @@ package cn.jackro.mvpdemo.presenter.android;
 
 import org.reactivestreams.Subscription;
 
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import cn.jackro.mvpdemo.bean.android.AndroidResult;
@@ -21,6 +24,13 @@ public class AndroidPresenter extends BasePresenter {
 
     private AndroidView mAndroidView;
 
+    private int currentPage = 1;
+
+    /**
+     * UI上的RecyclerView是否有数据
+     */
+    private boolean isUIHaveData = false;
+
     public AndroidPresenter(AndroidView androidView) {
         super(androidView);
         mAndroidView = androidView;
@@ -30,11 +40,19 @@ public class AndroidPresenter extends BasePresenter {
     @Override
     protected void initLoadData() {
         super.initLoadData();
-        getAndroidResults(1);
+        getAndroidResults(currentPage, isUIHaveData);
     }
 
-    public void getAndroidResults(int page) {
-        addDisposable(mAndroidModel.getAndroidResults(page)
+    /**
+     * 获取AndroidResult的list
+     *
+     * @param page         页数
+     * @param isUIHaveData UI上的RecyclerView是否有数据
+     */
+    public void getAndroidResults(final int page, boolean isUIHaveData) {
+        currentPage = page;
+        this.isUIHaveData = isUIHaveData;
+        addDisposable(mAndroidModel.getAndroidResults(currentPage)
                 .map(androidResultApiResult -> androidResultApiResult.results)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -51,18 +69,34 @@ public class AndroidPresenter extends BasePresenter {
 
     @Override
     protected void onError(Throwable e) {
-        mAndroidView.stopLoading();
-        mAndroidView.onError();
         super.onError(e);
+        if (e instanceof SocketTimeoutException) {
+            showError("网络连接超时，请检查网络或稍后再试");
+        } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
+            showError("网络错误，请检查网络或稍后再试");
+        } else {
+            showError("服务器出现未知异常");
+        }
+        mAndroidView.onError();
     }
 
-    private void onComplete() {
-        mAndroidView.stopLoading();
+    @Override
+    protected void onComplete() {
+        super.onComplete();
         mAndroidView.onComplete();
     }
 
-    private void onSubscribe(Subscription subscription) {
-        mAndroidView.showLoading();
+    @Override
+    protected void onSubscribe(Subscription subscription) {
+        super.onSubscribe(subscription);
         subscription.request(Long.MAX_VALUE);
+    }
+
+    private void showError(final String msg) {
+        if (currentPage == 1 && !isUIHaveData) {
+            mAndroidView.showErrorView(msg);
+        } else {
+            mAndroidView.showErrorToast(msg);
+        }
     }
 }

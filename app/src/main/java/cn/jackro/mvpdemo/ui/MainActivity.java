@@ -58,21 +58,6 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
     }
 
     @Override
-    public void showSocketTimeoutExceptionMsg() {
-        setErrorMsg(mSocketTimeOutExceptionStr);
-    }
-
-    @Override
-    public void showNetworkConnectExceptionMsg() {
-        setErrorMsg(mConnectExceptionStr);
-    }
-
-    @Override
-    public void showServerUnknownExceptionMsg() {
-        errorViewShowServerUnknownException();
-    }
-
-    @Override
     public void showAndroidResult(List<AndroidResult> androidResultList) {
         if (isRefresh) {
             mAndroidAdapter.update(androidResultList);
@@ -96,7 +81,15 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     @Override
     public void onError() {
-        showErrorView();
+        refreshOrLoadComplete();
+    }
+
+    @Override
+    public void onComplete() {
+        refreshOrLoadComplete();
+    }
+
+    private void refreshOrLoadComplete() {
         if (isRefresh) {
             mAndroidResultsXrv.refreshComplete();
             isRefresh = false;
@@ -108,15 +101,14 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
     }
 
     @Override
-    public void onComplete() {
-        if (isRefresh) {
-            mAndroidResultsXrv.refreshComplete();
-            isRefresh = false;
-        }
-        if (isLoadMore) {
-            mAndroidResultsXrv.loadMoreComplete();
-            isLoadMore = false;
-        }
+    public void showErrorView(String msg) {
+        showErrorView();
+        setErrorMsg(msg);
+    }
+
+    @Override
+    public void showErrorToast(String msg) {
+        ToastUtil.showShort(msg);
     }
 
     @Override
@@ -147,25 +139,33 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
         if (mErrorTextView.getVisibility() == View.VISIBLE) {
             hideErrorView();
         }
-        mAndroidPresenter.getAndroidResults(currentPageIndex);
+        mAndroidPresenter.getAndroidResults(currentPageIndex, isUIHaveData());
     }
 
     @Override
     public void onLoadMore() {
         isLoadMore = true;
+        // TODO: 2018/1/22 网络异常或其他异常时？？
         if (currentPageIndex * 20 > mAndroidAdapter.getItemCount()) {
             mAndroidResultsXrv.loadMoreComplete();
             ToastUtil.showShort("没有更多数据了");
             return;
         }
         currentPageIndex++;
-        mAndroidPresenter.getAndroidResults(currentPageIndex);
+        mAndroidPresenter.getAndroidResults(currentPageIndex, isUIHaveData());
     }
 
     @Override
     protected void errorViewClickToLoadData() {
         super.errorViewClickToLoadData();
         currentPageIndex = 1;
-        mAndroidPresenter.getAndroidResults(currentPageIndex);
+        mAndroidPresenter.getAndroidResults(currentPageIndex, isUIHaveData());
+    }
+
+    /**
+     * 判断UI上的RecyclerView是否有数据
+     */
+    private boolean isUIHaveData() {
+        return mAndroidAdapter.getItemCount() > 0;
     }
 }

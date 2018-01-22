@@ -6,16 +6,14 @@ import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.OnLifecycleEvent;
 
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
+import org.reactivestreams.Subscription;
 
 import cn.jackro.mvpdemo.ui.IBaseView;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 /**
- * MVP的P层超类，实现attachView和detachView，以管理RxJava的订阅对象
+ * @author JackRo
  */
 public class BasePresenter implements LifecycleObserver {
 
@@ -55,11 +53,6 @@ public class BasePresenter implements LifecycleObserver {
 
     }
 
-    /**
-     * 添加{@link Disposable}到mCompositeDisposable，以方便取消订阅
-     *
-     * @param disposable {@link Disposable}实例
-     */
     protected void addDisposable(Disposable disposable) {
         if (mCompositeDisposable == null) {
             mCompositeDisposable = new CompositeDisposable();
@@ -68,12 +61,14 @@ public class BasePresenter implements LifecycleObserver {
     }
 
     protected void onError(Throwable e) {
-        if (e instanceof SocketTimeoutException) {
-            mIBaseView.showSocketTimeoutExceptionMsg();
-        } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
-            mIBaseView.showNetworkConnectExceptionMsg();
-        } else {
-            mIBaseView.showServerUnknownExceptionMsg();
-        }
+        mIBaseView.stopLoading();
+    }
+
+    protected void onComplete() {
+        mIBaseView.stopLoading();
+    }
+
+    protected void onSubscribe(Subscription subscription) {
+        mIBaseView.showLoading();
     }
 }
