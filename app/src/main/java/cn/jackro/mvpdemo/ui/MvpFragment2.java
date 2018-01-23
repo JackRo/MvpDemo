@@ -34,17 +34,8 @@ public abstract class MvpFragment2 extends MvpFragment {
 
     }
 
-    /**
-     * 显示mErrorTextView
-     */
-    public void showErrorView() {
+    public void showErrorTextView(String msg) {
         ViewUtil.setViewVisible(mErrorTextView);
-    }
-
-    /**
-     * 设置mErrorTextView显示的错误信息
-     */
-    public void setErrorMsg(String msg) {
         mErrorTextView.setText(msg);
     }
 

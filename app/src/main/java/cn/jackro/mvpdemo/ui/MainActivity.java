@@ -32,6 +32,13 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
     }
 
     @Override
+    protected void initPresenterList() {
+        super.initPresenterList();
+        mAndroidPresenter = new AndroidPresenter(this);
+        mPresenterList.add(mAndroidPresenter);
+    }
+
+    @Override
     public void initView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -42,60 +49,6 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
         mAndroidResultsXrv.setLoadingListener(this);
         mAndroidResultsXrv.setAdapter(mAndroidAdapter);
         mAndroidResultsXrv.setLimitNumberToCallLoadMore(2);
-    }
-
-    @Override
-    protected void initPresenterList() {
-        super.initPresenterList();
-        mAndroidPresenter = new AndroidPresenter(this);
-        mPresenterList.add(mAndroidPresenter);
-    }
-
-    @Override
-    public void refreshData(List<AndroidResult> androidResultList) {
-        mAndroidAdapter.update(androidResultList);
-    }
-
-    @Override
-    public void loadMoreData(List<AndroidResult> androidResultList) {
-        mAndroidAdapter.addAll(androidResultList);
-    }
-
-    @Override
-    public void refreshComplete() {
-        mAndroidResultsXrv.refreshComplete();
-    }
-
-    @Override
-    public void loadMoreComplete() {
-        mAndroidResultsXrv.loadMoreComplete();
-    }
-
-    @Override
-    public void noMoreData() {
-        mAndroidResultsXrv.loadMoreComplete();
-        ToastUtil.showShort("没有更多数据了");
-    }
-
-    @Override
-    public void showErrorView(String msg) {
-        showErrorView();
-        setErrorMsg(msg);
-    }
-
-    @Override
-    public void showErrorToast(String msg) {
-        ToastUtil.showShort(msg);
-    }
-
-    @Override
-    public void showLoading() {
-        showLoadingProgressbar();
-    }
-
-    @Override
-    public void stopLoading() {
-        hideLoadingProgressbar();
     }
 
     @Override
@@ -128,4 +81,51 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
     protected void errorViewClickToLoadData() {
         mAndroidResultsXrv.refresh();
     }
+
+    @Override
+    public void showErrorView(String msg) {
+        showErrorTextView(msg);
+    }
+
+    @Override
+    public void showErrorToast(String msg) {
+        ToastUtil.showShort(msg);
+    }
+
+    @Override
+    public void showLoading() {
+        showLoadingProgressbar();
+    }
+
+    @Override
+    public void stopLoading() {
+        hideLoadingProgressbar();
+    }
+
+    @Override
+    public void refreshData(List<AndroidResult> androidResultList) {
+        mAndroidAdapter.update(androidResultList);
+    }
+
+    @Override
+    public void loadMoreData(List<AndroidResult> androidResultList) {
+        mAndroidAdapter.addAll(androidResultList);
+    }
+
+    @Override
+    public void refreshComplete() {
+        mAndroidResultsXrv.refreshComplete();
+    }
+
+    @Override
+    public void loadMoreComplete() {
+        mAndroidResultsXrv.loadMoreComplete();
+    }
+
+    @Override
+    public void noMoreData() {
+        mAndroidResultsXrv.loadMoreComplete();
+        ToastUtil.showShort("没有更多数据了");
+    }
+
 }
