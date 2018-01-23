@@ -13,6 +13,7 @@ import cn.jackro.mvpdemo.util.ViewUtil;
  * 数据加载出错时使用ErrorView展示
  * <p/>
  */
+@SuppressWarnings("unused")
 public abstract class MvpFragment2 extends MvpFragment {
 
     @BindView(R.id.loading_progressbar)

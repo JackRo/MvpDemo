@@ -17,6 +17,7 @@ public class ToastUtil {
         show(MyApp.getMyAppApplicationContext(), msg, LENGTH_SHORT);
     }
 
+    @SuppressWarnings("unused")
     public static void showLong(String msg) {
         show(MyApp.getMyAppApplicationContext(), msg, LENGTH_LONG);
     }

@@ -5,6 +5,7 @@ import android.view.View;
 
 import java.util.List;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public abstract class BaseAdapter<E> extends RecyclerView.Adapter<BaseViewHolder> {
 
     protected List<E> mList;

@@ -9,6 +9,7 @@ import cn.jackro.mvpdemo.presenter.BasePresenter;
  * 数据加载出错时使用@{@link Toast}展示
  * </p>
  */
+@SuppressWarnings("unused")
 public abstract class MvpFragment1 extends MvpFragment implements ProgressCancelListener {
 
     protected ProgressDialogHandler mProgressDialogHandler;

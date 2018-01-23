@@ -5,6 +5,7 @@ import android.view.View;
 
 import butterknife.ButterKnife;
 
+@SuppressWarnings({"unused", "WeakerAccess"})
 public class BaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
         View.OnLongClickListener {
 

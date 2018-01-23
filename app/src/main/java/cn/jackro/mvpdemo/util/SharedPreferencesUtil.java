@@ -6,8 +6,9 @@ import android.preference.PreferenceManager;
 import cn.jackro.mvpdemo.MyApp;
 
 /**
- * SharedPreferences Util, put value and get value
+ * @author JackRo
  */
+@SuppressWarnings({"unused", "unchecked"})
 public class SharedPreferencesUtil {
 
     private SharedPreferences mSharedPreferences;
@@ -41,7 +42,6 @@ public class SharedPreferencesUtil {
         editor.apply();
     }
 
-    @SuppressWarnings("unchecked")
     public <T> T get(String key, T t) {
         if (t instanceof String) {
             String str = mSharedPreferences.getString(key, (String) t);

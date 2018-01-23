@@ -1,6 +1,5 @@
 package cn.jackro.mvpdemo.model;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import cn.jackro.mvpdemo.BuildConfig;
@@ -8,7 +7,6 @@ import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -22,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Tip: 使用这个类，你必须调用{@link #setBaseUrl(String)}设置它的BASE_URL
  * </p>
  */
+@SuppressWarnings("WeakerAccess")
 public class Api {
 
     private static String BASE_URL;
@@ -41,16 +40,13 @@ public class Api {
         builder.writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         builder.retryOnConnectionFailure(true);
 
-        Interceptor interceptor = new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Headers.Builder headersBuilder = new Headers.Builder()
-                        .add("Accept", "application/json")
-                        .add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                Request request = chain.request();
-                Headers headers = headersBuilder.build();
-                return chain.proceed(request.newBuilder().headers(headers).build());
-            }
+        Interceptor interceptor = chain -> {
+            Headers.Builder headersBuilder = new Headers.Builder()
+                    .add("Accept", "application/json")
+                    .add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            Request request = chain.request();
+            Headers headers = headersBuilder.build();
+            return chain.proceed(request.newBuilder().headers(headers).build());
         };
 
 

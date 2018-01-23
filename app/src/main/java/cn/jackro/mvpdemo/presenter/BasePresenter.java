@@ -19,7 +19,6 @@ public class BasePresenter implements LifecycleObserver {
 
     private CompositeDisposable mCompositeDisposable;
 
-    @SuppressWarnings("FieldCanBeLocal")
     private IBaseView mIBaseView;
 
     public BasePresenter(IBaseView IBaseView) {

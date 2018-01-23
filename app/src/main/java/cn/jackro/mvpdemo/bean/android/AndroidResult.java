@@ -5,6 +5,7 @@ import java.util.List;
 /**
  * @author JackRo
  */
+@SuppressWarnings("unused")
 public class AndroidResult {
 
     /**

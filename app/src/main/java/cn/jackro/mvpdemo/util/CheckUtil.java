@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * CheckUtil
  */
+@SuppressWarnings("unused")
 public final class CheckUtil {
 
     public static boolean isListNotNull(List list) {

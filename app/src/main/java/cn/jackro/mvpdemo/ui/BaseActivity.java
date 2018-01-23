@@ -1,7 +1,6 @@
 package cn.jackro.mvpdemo.ui;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -61,8 +60,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (getCurrentFocus() != null && getCurrentFocus().getWindowToken() != null) {
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService
                         (INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
+                if (inputMethodManager != null) {
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                }
             }
         }
         return super.onTouchEvent(event);
@@ -83,16 +84,12 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param desc 必须权限的说明
      */
+    @SuppressWarnings("unused")
     protected void showAppMustPermissionTipDialog(String desc) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setTitle(mDialogTitleWarmTip);
         builder.setMessage(desc);
-        builder.setPositiveButton(mDialogGoToAppSettings, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                openAppSettingsDetails();
-            }
-        });
+        builder.setPositiveButton(mDialogGoToAppSettings, (dialog, which) -> openAppSettingsDetails());
         builder.show();
     }
 

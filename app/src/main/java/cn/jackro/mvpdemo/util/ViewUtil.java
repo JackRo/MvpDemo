@@ -26,6 +26,7 @@ public class ViewUtil {
         }
     }
 
+    @SuppressWarnings("unused")
     public static void setViewInvisible(final View view) {
         if (view.getVisibility() == VISIBLE) {
             view.setVisibility(INVISIBLE);

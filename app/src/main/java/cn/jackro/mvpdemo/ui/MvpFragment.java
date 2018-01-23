@@ -1,21 +1,20 @@
 package cn.jackro.mvpdemo.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindString;
-import cn.jackro.mvpdemo.R;
 import cn.jackro.mvpdemo.presenter.BasePresenter;
 import cn.jackro.mvpdemo.util.CheckUtil;
 
 /**
  * <p>
- * 持有{@link BasePresenter}的List，用于处理网络请求的业务逻辑，不同的{@link BasePresenter}
- * 实例处理不同的网络请求业务。
+ * 持有{@link BasePresenter}的List，用于处理业务逻辑，不同的{@link BasePresenter}
+ * 实例处理不同的业务。
  * <p/>
  * <p>
  * 实现Fragment的数据懒加载
@@ -28,13 +27,6 @@ public abstract class MvpFragment extends BaseFragment {
     protected boolean mIsVisibleToUser;
 
     protected boolean mIsViewPrepared;
-
-    @BindString(R.string.socket_timeout_exception_str)
-    String mSocketTimeOutExceptionStr;
-    @BindString(R.string.connect_exception_str)
-    String mConnectExceptionStr;
-    @BindString(R.string.server_unknown_exception_str)
-    String mServerUnknownExceptionStr;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -50,7 +42,7 @@ public abstract class MvpFragment extends BaseFragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mIsViewPrepared = true;
     }
