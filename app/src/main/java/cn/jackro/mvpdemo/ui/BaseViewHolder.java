@@ -5,9 +5,6 @@ import android.view.View;
 
 import butterknife.ButterKnife;
 
-/**
- * Base RecyclerView.ViewHolder
- */
 public class BaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
         View.OnLongClickListener {
 

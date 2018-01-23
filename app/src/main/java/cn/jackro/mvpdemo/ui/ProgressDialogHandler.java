@@ -2,15 +2,11 @@ package cn.jackro.mvpdemo.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 
 import cn.jackro.mvpdemo.presenter.BasePresenter;
 
-/**
- * ProgressDialogHandler
- */
 public class ProgressDialogHandler extends Handler {
 
     static final int SHOW_PROGRESS_DIALOG = 1;
@@ -45,12 +41,9 @@ public class ProgressDialogHandler extends Handler {
             mProgressDialog.setCanceledOnTouchOutside(mCancelable);
 
             if (mCancelable) {
-                mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        mProgressDialog = null;
-                        mProgressCancelListener.onCancelProgress(mPresenter);
-                    }
+                mProgressDialog.setOnCancelListener(dialog -> {
+                    mProgressDialog = null;
+                    mProgressCancelListener.onCancelProgress(mPresenter);
                 });
             }
 
@@ -60,9 +53,6 @@ public class ProgressDialogHandler extends Handler {
         }
     }
 
-    /**
-     * 关闭mProgressDialog
-     */
     private void dismissProgressDialog() {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();

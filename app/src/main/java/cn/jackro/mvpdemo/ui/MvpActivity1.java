@@ -3,7 +3,6 @@ package cn.jackro.mvpdemo.ui;
 import android.widget.Toast;
 
 import cn.jackro.mvpdemo.presenter.BasePresenter;
-import cn.jackro.mvpdemo.util.ToastUtil;
 
 /**
  * <p>
@@ -13,13 +12,6 @@ import cn.jackro.mvpdemo.util.ToastUtil;
 public abstract class MvpActivity1 extends MvpActivity implements ProgressCancelListener {
 
     protected ProgressDialogHandler mProgressDialogHandler;
-
-    /**
-     * Toast显示服务器出现未知异常的信息
-     */
-    public void toastShowServerUnknownException() {
-        ToastUtil.showShort(mServerUnknownExceptionStr);
-    }
 
     /**
      * 显示ProgressDialog
@@ -34,9 +26,6 @@ public abstract class MvpActivity1 extends MvpActivity implements ProgressCancel
         mProgressDialogHandler.obtainMessage(ProgressDialogHandler.SHOW_PROGRESS_DIALOG).sendToTarget();
     }
 
-    /**
-     * 关闭ProgressDialog
-     */
     protected void dismissProgressDialog() {
         if (mProgressDialogHandler != null) {
             mProgressDialogHandler.obtainMessage(ProgressDialogHandler.DISMISS_PROGRESS_DIALOG).sendToTarget();

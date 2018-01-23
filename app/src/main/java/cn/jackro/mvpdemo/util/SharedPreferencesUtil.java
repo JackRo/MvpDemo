@@ -25,13 +25,6 @@ public class SharedPreferencesUtil {
         return Singleton.INSTANCE;
     }
 
-    /**
-     * put t to SharedPreferences xml
-     *
-     * @param key SharedPreferences key
-     * @param t   SharedPreferences value, type is T
-     * @param <T> Type T
-     */
     public <T> void put(String key, T t) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         if (t instanceof String) {
@@ -48,14 +41,6 @@ public class SharedPreferencesUtil {
         editor.apply();
     }
 
-    /**
-     * obtained T from SharedPreferences xml
-     *
-     * @param key SharedPreferences key
-     * @param t   SharedPreferences default value
-     * @param <T> Type T
-     * @return return obtained T
-     */
     @SuppressWarnings("unchecked")
     public <T> T get(String key, T t) {
         if (t instanceof String) {
