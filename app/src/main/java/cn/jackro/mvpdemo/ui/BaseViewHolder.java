@@ -35,14 +35,14 @@ public class BaseViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     @Override
     public void onClick(View v) {
         if (mOnItemClickListener != null) {
-            mOnItemClickListener.onItemClick(v, getAdapterPosition());
+            mOnItemClickListener.onItemClick(v, getAdapterPosition() - 1);
         }
     }
 
     @Override
     public boolean onLongClick(View v) {
         if (mOnItemLongClickListener != null) {
-            mOnItemLongClickListener.onItemLongClick(v, getAdapterPosition());
+            mOnItemLongClickListener.onItemLongClick(v, getAdapterPosition() - 1);
             return true;
         }
         return false;
