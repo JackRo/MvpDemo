@@ -53,7 +53,6 @@ public class AndroidPresenter extends BasePresenter {
         currentPage = page;
         this.isUIHaveData = isUIHaveData;
         addDisposable(mAndroidModel.getAndroidResults(currentPage)
-                .map(androidResultApiResult -> androidResultApiResult.results)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onNext, this::onError, this::onComplete, this::onSubscribe));
@@ -75,7 +74,7 @@ public class AndroidPresenter extends BasePresenter {
         } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
             showError("网络错误，请检查网络或稍后再试");
         } else {
-            showError("服务器出现未知异常");
+            showError(e.getMessage());
         }
         mAndroidView.onError();
     }
