@@ -1,12 +1,12 @@
 package cn.jackro.mvpdemo.ui;
 
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.jackro.mvpdemo.R;
+import cn.jackro.mvpdemo.util.ViewUtil;
 
 /**
  * <p>
@@ -20,63 +20,25 @@ public abstract class MvpFragment2 extends MvpFragment {
     @BindView(R.id.error_text_view)
     TextView mErrorTextView;
 
-    /**
-     * <p>
-     * view层的抽象类，在这里统一处理错误(错误以ErrorView的形式显示)，处理ProgressBar的显示和隐藏。
-     * 你可以在{@link MvpFragment2}的子类Fragment实现这个抽象类，
-     * 并且你可以做自己的Rx回调实现，甚至覆盖这个抽象类的实现都可以。
-     * <p/>
-     *
-     */
-    //public abstract class BaseView2<T> implements IBaseView<T> {
-    //
-    //    @Override
-    //    public void onRxStart() {
-    //        showLoadingProgressbar();
-    //    }
-    //
-    //    @Override
-    //    public void onNext(T t) {
-    //
-    //    }
-    //
-    //    @Override
-    //    public void onComplete() {
-    //        hideLoadingProgressbar();
-    //    }
-    //
-    //    @Override
-    //    public void onError(Throwable e) {
-    //        hideLoadingProgressbar();
-    //        showErrorView();
-    //        if (e instanceof SocketTimeoutException) {
-    //            setErrorMsg(mSocketTimeOutExceptionStr);
-    //        } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
-    //            setErrorMsg(mConnectExceptionStr);
-    //        } else {
-    //            errorViewShowServerUnknownException();
-    //        }
-    //    }
-    //}
-
     @OnClick(R.id.error_text_view)
     public void onErrorViewClick() {
         hideErrorView();
-        loadData();
+        errorViewClickToLoadData();
     }
 
     /**
-     * 点击ErrorView时重新加载数据
+     * 子类实现该方法以实现点击ErrorView时加载数据，可调用父类方法以在加载数据之前显示加载进度条
      */
-    protected void loadData() {
-
+    protected void errorViewClickToLoadData() {
+        hideErrorView();
+        showLoadingProgressbar();
     }
 
     /**
      * 显示mErrorTextView
      */
     public void showErrorView() {
-        mErrorTextView.setVisibility(View.VISIBLE);
+        ViewUtil.setViewVisible(mErrorTextView);
     }
 
     /**
@@ -87,30 +49,23 @@ public abstract class MvpFragment2 extends MvpFragment {
     }
 
     /**
-     * ErrorView显示服务器出现未知异常的信息
-     */
-    public void errorViewShowServerUnknownException() {
-        setErrorMsg(mServerUnknownExceptionStr);
-    }
-
-    /**
      * 隐藏mErrorTextView
      */
     public void hideErrorView() {
-        mErrorTextView.setVisibility(View.GONE);
+        ViewUtil.setViewGone(mErrorTextView);
     }
 
     /**
      * 显示mLoadingProgressbar
      */
     public void showLoadingProgressbar() {
-        mLoadingProgressbar.setVisibility(View.VISIBLE);
+        ViewUtil.setViewVisible(mLoadingProgressbar);
     }
 
     /**
      * 隐藏mLoadingProgressbar
      */
     public void hideLoadingProgressbar() {
-        mLoadingProgressbar.setVisibility(View.GONE);
+        ViewUtil.setViewGone(mLoadingProgressbar);
     }
 }

@@ -136,9 +136,7 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
     public void onRefresh() {
         isRefresh = true;
         currentPageIndex = 1;
-        if (mErrorTextView.getVisibility() == View.VISIBLE) {
-            hideErrorView();
-        }
+        hideErrorView();
         mAndroidPresenter.getAndroidResults(currentPageIndex, isUIHaveData());
     }
 
