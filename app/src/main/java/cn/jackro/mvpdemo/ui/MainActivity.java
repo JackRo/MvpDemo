@@ -61,7 +61,7 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     @Override
     public void onRefresh() {
-        hideErrorView();
+        hideErrorTextView();
         mAndroidPresenter.refreshData(getAndroidResultsCount());
     }
 

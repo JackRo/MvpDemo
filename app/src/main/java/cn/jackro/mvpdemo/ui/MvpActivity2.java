@@ -37,23 +37,14 @@ public abstract class MvpActivity2 extends MvpActivity {
         mErrorTextView.setText(msg);
     }
 
-    /**
-     * 隐藏mErrorTextView
-     */
-    public void hideErrorView() {
+    public void hideErrorTextView() {
         ViewUtil.setViewGone(mErrorTextView);
     }
 
-    /**
-     * 显示mLoadingProgressbar
-     */
     public void showLoadingProgressbar() {
         ViewUtil.setViewVisible(mLoadingProgressbar);
     }
 
-    /**
-     * 隐藏mLoadingProgressbar
-     */
     public void hideLoadingProgressbar() {
         ViewUtil.setViewGone(mLoadingProgressbar);
     }

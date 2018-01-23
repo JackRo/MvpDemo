@@ -23,7 +23,6 @@ public abstract class MvpFragment2 extends MvpFragment {
 
     @OnClick(R.id.error_text_view)
     public void onErrorViewClick() {
-        hideErrorView();
         errorViewClickToLoadData();
     }
 
@@ -39,23 +38,14 @@ public abstract class MvpFragment2 extends MvpFragment {
         mErrorTextView.setText(msg);
     }
 
-    /**
-     * 隐藏mErrorTextView
-     */
-    public void hideErrorView() {
+    public void hideErrorTextView() {
         ViewUtil.setViewGone(mErrorTextView);
     }
 
-    /**
-     * 显示mLoadingProgressbar
-     */
     public void showLoadingProgressbar() {
         ViewUtil.setViewVisible(mLoadingProgressbar);
     }
 
-    /**
-     * 隐藏mLoadingProgressbar
-     */
     public void hideLoadingProgressbar() {
         ViewUtil.setViewGone(mLoadingProgressbar);
     }
