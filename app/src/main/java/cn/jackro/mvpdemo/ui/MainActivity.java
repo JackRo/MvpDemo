@@ -155,9 +155,7 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     @Override
     protected void errorViewClickToLoadData() {
-        super.errorViewClickToLoadData();
-        currentPageIndex = 1;
-        mAndroidPresenter.getAndroidResults(currentPageIndex, isUIHaveData());
+        mAndroidResultsXrv.refresh();
     }
 
     /**

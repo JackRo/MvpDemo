@@ -30,8 +30,7 @@ public abstract class MvpFragment2 extends MvpFragment {
      * 子类实现该方法以实现点击ErrorView时加载数据，可调用父类方法以在加载数据之前显示加载进度条
      */
     protected void errorViewClickToLoadData() {
-        hideErrorView();
-        showLoadingProgressbar();
+
     }
 
     /**
