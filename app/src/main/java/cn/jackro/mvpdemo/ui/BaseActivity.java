@@ -42,16 +42,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (getIntent() != null) {
             mExtraDataIntent = getIntent();
         }
-        initToolbar();
-        initView();
     }
 
     protected abstract int getLayoutResourceId();
-
-    protected abstract void initView();
-
-    protected void initToolbar() {
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

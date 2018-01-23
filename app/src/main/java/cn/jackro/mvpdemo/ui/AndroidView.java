@@ -9,12 +9,14 @@ import cn.jackro.mvpdemo.bean.android.AndroidResult;
  */
 public interface AndroidView extends IBaseView {
 
-    void showAndroidResult(List<AndroidResult> androidResultList);
+    void refreshData(List<AndroidResult> androidResultList);
 
-    void showNoDataMsg();
+    void loadMoreData(List<AndroidResult> androidResultList);
 
-    void onError();
+    void refreshComplete();
 
-    void onComplete();
+    void loadMoreComplete();
+
+    void noMoreData();
 
 }

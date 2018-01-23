@@ -26,19 +26,13 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     private AndroidAdapter mAndroidAdapter;
 
-    private int currentPageIndex = 1;
-
-    private boolean isRefresh = false;
-
-    private boolean isLoadMore = false;
-
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_main;
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mAndroidResultsXrv.setLayoutManager(layoutManager);
@@ -58,46 +52,29 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
     }
 
     @Override
-    public void showAndroidResult(List<AndroidResult> androidResultList) {
-        if (isRefresh) {
-            mAndroidAdapter.update(androidResultList);
-        } else if (isLoadMore) {
-            mAndroidAdapter.addAll(androidResultList);
-        } else {
-            mAndroidAdapter.update(androidResultList);
-        }
+    public void refreshData(List<AndroidResult> androidResultList) {
+        mAndroidAdapter.update(androidResultList);
     }
 
     @Override
-    public void showNoDataMsg() {
-        if (currentPageIndex == 1) {
-            mAndroidAdapter.clearAll();
-            showErrorView();
-            setErrorMsg("没有一条数据");
-        } else {
-            ToastUtil.showShort("没有更多数据了");
-        }
+    public void loadMoreData(List<AndroidResult> androidResultList) {
+        mAndroidAdapter.addAll(androidResultList);
     }
 
     @Override
-    public void onError() {
-        refreshOrLoadComplete();
+    public void refreshComplete() {
+        mAndroidResultsXrv.refreshComplete();
     }
 
     @Override
-    public void onComplete() {
-        refreshOrLoadComplete();
+    public void loadMoreComplete() {
+        mAndroidResultsXrv.loadMoreComplete();
     }
 
-    private void refreshOrLoadComplete() {
-        if (isRefresh) {
-            mAndroidResultsXrv.refreshComplete();
-            isRefresh = false;
-        }
-        if (isLoadMore) {
-            mAndroidResultsXrv.loadMoreComplete();
-            isLoadMore = false;
-        }
+    @Override
+    public void noMoreData() {
+        mAndroidResultsXrv.loadMoreComplete();
+        ToastUtil.showShort("没有更多数据了");
     }
 
     @Override
@@ -113,9 +90,6 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     @Override
     public void showLoading() {
-        if (isRefresh || isLoadMore) {
-            return;
-        }
         showLoadingProgressbar();
     }
 
@@ -134,34 +108,24 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     @Override
     public void onRefresh() {
-        isRefresh = true;
-        currentPageIndex = 1;
         hideErrorView();
-        mAndroidPresenter.getAndroidResults(currentPageIndex, isUIHaveData());
+        mAndroidPresenter.refreshData(getAndroidResultsCount());
     }
 
     @Override
     public void onLoadMore() {
-        isLoadMore = true;
-        // TODO: 2018/1/22 网络异常或其他异常时？？
-        if (currentPageIndex * 20 > mAndroidAdapter.getItemCount()) {
-            mAndroidResultsXrv.loadMoreComplete();
-            ToastUtil.showShort("没有更多数据了");
-            return;
-        }
-        currentPageIndex++;
-        mAndroidPresenter.getAndroidResults(currentPageIndex, isUIHaveData());
+        mAndroidPresenter.loadMore(getAndroidResultsCount());
+    }
+
+    /**
+     * 获取页面上AndroidResult的数量
+     */
+    private int getAndroidResultsCount() {
+        return mAndroidAdapter.getItemCount();
     }
 
     @Override
     protected void errorViewClickToLoadData() {
         mAndroidResultsXrv.refresh();
-    }
-
-    /**
-     * 判断UI上的RecyclerView是否有数据
-     */
-    private boolean isUIHaveData() {
-        return mAndroidAdapter.getItemCount() > 0;
     }
 }

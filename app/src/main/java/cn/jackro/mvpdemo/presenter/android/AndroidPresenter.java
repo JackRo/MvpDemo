@@ -26,10 +26,14 @@ public class AndroidPresenter extends BasePresenter {
 
     private int currentPage = 1;
 
+    private boolean isRefresh = false;
+
+    private boolean isLoadMore = false;
+
     /**
-     * UI上的RecyclerView是否有数据
+     * 页面上AndroidResult的数量
      */
-    private boolean isUIHaveData = false;
+    private int count = 0;
 
     public AndroidPresenter(AndroidView androidView) {
         super(androidView);
@@ -38,20 +42,34 @@ public class AndroidPresenter extends BasePresenter {
     }
 
     @Override
-    protected void initLoadData() {
-        super.initLoadData();
-        getAndroidResults(currentPage, isUIHaveData);
+    protected void initData() {
+        super.initData();
+        refreshData(0);
+    }
+
+    public void refreshData(int count) {
+        isRefresh = true;
+        currentPage = 1;
+        getAndroidResults(count);
+    }
+
+    public void loadMore(int count) {
+        isLoadMore = true;
+        if (currentPage * 20 <= count) {
+            currentPage++;
+            getAndroidResults(count);
+        } else {
+            mAndroidView.noMoreData();
+        }
     }
 
     /**
      * 获取AndroidResult的list
      *
-     * @param page         页数
-     * @param isUIHaveData UI上的RecyclerView是否有数据
+     * @param count 界面上已加载的AndroidResult的数量
      */
-    public void getAndroidResults(final int page, boolean isUIHaveData) {
-        currentPage = page;
-        this.isUIHaveData = isUIHaveData;
+    private void getAndroidResults(int count) {
+        this.count = count;
         addDisposable(mAndroidModel.getAndroidResults(currentPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -60,9 +78,20 @@ public class AndroidPresenter extends BasePresenter {
 
     private void onNext(List<AndroidResult> androidResultList) {
         if (CheckUtil.isListNotNull(androidResultList)) {
-            mAndroidView.showAndroidResult(androidResultList);
+            //mAndroidView.showAndroidResult(androidResultList);
+            if (isRefresh) {
+                mAndroidView.refreshData(androidResultList);
+            } else if (isLoadMore) {
+                mAndroidView.loadMoreData(androidResultList);
+            } else {
+                mAndroidView.refreshData(androidResultList);
+            }
         } else {
-            mAndroidView.showNoDataMsg();
+            if (currentPage == 1 && count <= 0) {
+                mAndroidView.showErrorView("没有加载到数据");
+            } else {
+                mAndroidView.noMoreData();
+            }
         }
     }
 
@@ -76,23 +105,36 @@ public class AndroidPresenter extends BasePresenter {
         } else {
             showError(e.getMessage());
         }
-        mAndroidView.onError();
+        refreshOrLoadMoreComplete();
     }
 
     @Override
     protected void onComplete() {
         super.onComplete();
-        mAndroidView.onComplete();
+        refreshOrLoadMoreComplete();
+    }
+
+    private void refreshOrLoadMoreComplete() {
+        if (isRefresh) {
+            mAndroidView.refreshComplete();
+            isRefresh = false;
+        }
+        if (isLoadMore) {
+            mAndroidView.loadMoreComplete();
+            isLoadMore = false;
+        }
     }
 
     @Override
     protected void onSubscribe(Subscription subscription) {
-        super.onSubscribe(subscription);
+        if (!isRefresh && !isLoadMore) {
+            super.onSubscribe(subscription);
+        }
         subscription.request(Long.MAX_VALUE);
     }
 
     private void showError(final String msg) {
-        if (currentPage == 1 && !isUIHaveData) {
+        if (currentPage == 1 && count <= 0) {
             mAndroidView.showErrorView(msg);
         } else {
             mAndroidView.showErrorToast(msg);

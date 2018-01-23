@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.jackro.mvpdemo.presenter.BasePresenter;
-import cn.jackro.mvpdemo.util.CheckUtil;
 
 /**
  * <p>
@@ -51,16 +50,6 @@ public abstract class MvpFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         lazyLoad();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        if (CheckUtil.isListNotNull(mPresenterList)) {
-            for (BasePresenter presenter : mPresenterList) {
-                presenter.detach();
-            }
-        }
     }
 
     protected abstract void lazyLoad();

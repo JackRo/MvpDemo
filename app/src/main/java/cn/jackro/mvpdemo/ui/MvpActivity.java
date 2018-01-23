@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.jackro.mvpdemo.presenter.BasePresenter;
-import cn.jackro.mvpdemo.util.CheckUtil;
 
 /**
  * <p>
@@ -23,16 +22,6 @@ public abstract class MvpActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         initPresenterList();
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (CheckUtil.isListNotNull(mPresenterList)) {
-            for (BasePresenter presenter : mPresenterList) {
-                presenter.detach();
-            }
-        }
     }
 
     /**

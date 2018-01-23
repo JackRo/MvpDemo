@@ -38,6 +38,6 @@ public abstract class MvpActivity1 extends MvpActivity implements ProgressCancel
     public void onCancelProgress(BasePresenter presenter) {
         mProgressDialogHandler = null;
         //调用这个方法以取消网络请求
-        presenter.detach();
+        presenter.unsubscribe();
     }
 }

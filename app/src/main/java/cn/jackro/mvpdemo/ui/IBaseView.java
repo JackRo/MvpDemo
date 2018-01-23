@@ -1,9 +1,13 @@
 package cn.jackro.mvpdemo.ui;
 
 /**
- * MVP的view层接口，用于Rx接口回调
+ * MVP的view层接口，用于UI逻辑接口回调
+ *
+ * @author JackRo
  */
 public interface IBaseView {
+
+    void initView();
 
     void showErrorView(String msg);
 

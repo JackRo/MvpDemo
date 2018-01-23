@@ -1,10 +1,9 @@
 package cn.jackro.mvpdemo.presenter;
 
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.DefaultLifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.OnLifecycleEvent;
+import android.support.annotation.NonNull;
 
 import org.reactivestreams.Subscription;
 
@@ -13,9 +12,11 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 /**
+ * MVP的Presenter层基类，可感知页面(activity or fragment)生命周期以处理页面的data的初始化与view的初始化，管理rxjava订阅对象
+ *
  * @author JackRo
  */
-public class BasePresenter implements LifecycleObserver {
+public class BasePresenter implements DefaultLifecycleObserver {
 
     private CompositeDisposable mCompositeDisposable;
 
@@ -28,35 +29,24 @@ public class BasePresenter implements LifecycleObserver {
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    public void initData() {
-        initLoadData();
+    @Override
+    public void onCreate(@NonNull LifecycleOwner owner) {
+        initView();
+        initData();
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    public void detach() {
+    @Override
+    public void onPause(@NonNull LifecycleOwner owner) {
         //取消订阅以取消网络请求
         unsubscribe();
     }
 
-    /**
-     * 取消订阅，避免内存泄露
-     */
-    private void unsubscribe() {
-        if (mCompositeDisposable != null && mCompositeDisposable.size() > 0) {
-            mCompositeDisposable.clear();
-        }
+    private void initView() {
+        mIBaseView.initView();
     }
 
-    protected void initLoadData() {
+    protected void initData() {
 
-    }
-
-    protected void addDisposable(Disposable disposable) {
-        if (mCompositeDisposable == null) {
-            mCompositeDisposable = new CompositeDisposable();
-        }
-        mCompositeDisposable.add(disposable);
     }
 
     protected void onError(Throwable e) {
@@ -70,4 +60,21 @@ public class BasePresenter implements LifecycleObserver {
     protected void onSubscribe(Subscription subscription) {
         mIBaseView.showLoading();
     }
+
+    /**
+     * 取消订阅，避免内存泄露
+     */
+    public void unsubscribe() {
+        if (mCompositeDisposable != null && mCompositeDisposable.size() > 0) {
+            mCompositeDisposable.clear();
+        }
+    }
+
+    protected void addDisposable(Disposable disposable) {
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = new CompositeDisposable();
+        }
+        mCompositeDisposable.add(disposable);
+    }
+
 }
