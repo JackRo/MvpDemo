@@ -6,6 +6,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.List;
@@ -44,11 +45,32 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mAndroidResultsXrv.setLayoutManager(layoutManager);
         mAndroidResultsXrv.setItemAnimator(new DefaultItemAnimator());
+
+        mAndroidResultsXrv.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mAndroidResultsXrv.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        mAndroidResultsXrv.setArrowImageView(R.drawable.icon_arrow);
+
+        mAndroidResultsXrv.getDefaultFootView().setLoadingHint("正在加载中...");
+        mAndroidResultsXrv.getDefaultFootView().setNoMoreHint("没有更多数据了");
+
+        mAndroidResultsXrv.setLimitNumberToCallLoadMore(2);
+
+        mAndroidResultsXrv.setLoadingListener(this);
+
         mAndroidAdapter = new AndroidAdapter();
         mAndroidAdapter.setOnItemClickListener(this);
-        mAndroidResultsXrv.setLoadingListener(this);
+
         mAndroidResultsXrv.setAdapter(mAndroidAdapter);
-        mAndroidResultsXrv.setLimitNumberToCallLoadMore(2);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // release memory
+        if(mAndroidResultsXrv != null){
+            mAndroidResultsXrv.destroy();
+            mAndroidResultsXrv = null;
+        }
     }
 
     @Override
@@ -128,8 +150,8 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     @Override
     public void noMoreData() {
-        mAndroidResultsXrv.loadMoreComplete();
-        ToastUtil.showShort("没有更多数据了");
+        mAndroidResultsXrv.setNoMore(true);
+        //ToastUtil.showShort("没有更多数据了");
     }
 
 }
