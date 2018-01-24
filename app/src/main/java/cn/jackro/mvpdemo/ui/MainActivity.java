@@ -69,16 +69,16 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
         mAndroidPresenter.loadMore(getAndroidResultsCount());
     }
 
+    @Override
+    protected void errorViewClickToLoadData() {
+        mAndroidPresenter.refreshData(getAndroidResultsCount());
+    }
+
     /**
      * 获取页面上AndroidResult的数量
      */
     private int getAndroidResultsCount() {
         return mAndroidAdapter.getItemCount();
-    }
-
-    @Override
-    protected void errorViewClickToLoadData() {
-        mAndroidResultsXrv.refresh();
     }
 
     @Override
