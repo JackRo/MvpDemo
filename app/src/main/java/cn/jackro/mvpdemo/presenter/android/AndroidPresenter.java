@@ -78,7 +78,6 @@ public class AndroidPresenter extends BasePresenter {
 
     private void onNext(List<AndroidResult> androidResultList) {
         if (CheckUtil.isListNotNull(androidResultList)) {
-            //mAndroidView.showAndroidResult(androidResultList);
             if (isRefresh) {
                 mAndroidView.refreshData(androidResultList);
             } else if (isLoadMore) {
@@ -114,20 +113,10 @@ public class AndroidPresenter extends BasePresenter {
         refreshOrLoadMoreComplete();
     }
 
-    private void refreshOrLoadMoreComplete() {
-        if (isRefresh) {
-            mAndroidView.refreshComplete();
-            isRefresh = false;
-        }
-        if (isLoadMore) {
-            mAndroidView.loadMoreComplete();
-            isLoadMore = false;
-        }
-    }
-
     @Override
     protected void onSubscribe(Subscription subscription) {
-        if (!isRefresh && !isLoadMore) {
+        if (currentPage == 1 && count <= 0 && isRefresh) {
+            mAndroidView.hideErrorView();
             super.onSubscribe(subscription);
         }
         subscription.request(Long.MAX_VALUE);
@@ -138,6 +127,17 @@ public class AndroidPresenter extends BasePresenter {
             mAndroidView.showErrorView(msg);
         } else {
             mAndroidView.showErrorToast(msg);
+        }
+    }
+
+    private void refreshOrLoadMoreComplete() {
+        if (isRefresh) {
+            mAndroidView.refreshComplete();
+            isRefresh = false;
+        }
+        if (isLoadMore) {
+            mAndroidView.loadMoreComplete();
+            isLoadMore = false;
         }
     }
 }

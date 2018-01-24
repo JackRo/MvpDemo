@@ -61,7 +61,6 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     @Override
     public void onRefresh() {
-        hideErrorTextView();
         mAndroidPresenter.refreshData(getAndroidResultsCount());
     }
 
@@ -90,6 +89,11 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
     @Override
     public void showErrorToast(String msg) {
         ToastUtil.showShort(msg);
+    }
+
+    @Override
+    public void hideErrorView() {
+        hideErrorTextView();
     }
 
     @Override

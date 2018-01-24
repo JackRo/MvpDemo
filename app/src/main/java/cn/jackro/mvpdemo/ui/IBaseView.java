@@ -13,6 +13,8 @@ public interface IBaseView {
 
     void showErrorToast(String msg);
 
+    void hideErrorView();
+
     void showLoading();
 
     void stopLoading();
