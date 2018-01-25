@@ -62,6 +62,7 @@ public class AndroidPresenter extends BasePresenter {
             currentPage++;
             getAndroidResults();
         } else {
+            mAndroidView.loadMoreComplete();
             mAndroidView.noMoreData();
         }
     }

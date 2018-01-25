@@ -150,8 +150,6 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     @Override
     public void noMoreData() {
-        //mAndroidResultsXrv.setNoMore(true);
-        //mAndroidResultsXrv.loadMoreComplete();
         ToastUtil.showShort("没有更多数据了");
     }
 
