@@ -1,7 +1,5 @@
 package cn.jackro.mvpdemo.presenter.android;
 
-import android.util.Log;
-
 import org.reactivestreams.Subscription;
 
 import java.net.ConnectException;
@@ -59,8 +57,6 @@ public class AndroidPresenter extends BasePresenter {
     public void loadMoreData(int androidResultSize) {
         isLoadMore = true;
         count = androidResultSize;
-
-        Log.e("loadMore", "loadMore: " + currentPage + "::" + count);
 
         if (canLoadMore()) {
             currentPage++;
