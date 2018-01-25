@@ -53,7 +53,7 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
         mAndroidResultsXrv.getDefaultFootView().setLoadingHint("正在加载中...");
         mAndroidResultsXrv.getDefaultFootView().setNoMoreHint("没有更多数据了");
 
-        mAndroidResultsXrv.setLimitNumberToCallLoadMore(2);
+        //mAndroidResultsXrv.setLimitNumberToCallLoadMore(1);
 
         mAndroidResultsXrv.setLoadingListener(this);
 
@@ -88,7 +88,7 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     @Override
     public void onLoadMore() {
-        mAndroidPresenter.loadMore(getAndroidResultsCount());
+        mAndroidPresenter.loadMoreData(getAndroidResultsCount());
     }
 
     @Override
@@ -150,8 +150,9 @@ public class MainActivity extends MvpActivity2 implements AndroidView, BaseAdapt
 
     @Override
     public void noMoreData() {
-        mAndroidResultsXrv.setNoMore(true);
-        //ToastUtil.showShort("没有更多数据了");
+        //mAndroidResultsXrv.setNoMore(true);
+        //mAndroidResultsXrv.loadMoreComplete();
+        ToastUtil.showShort("没有更多数据了");
     }
 
 }

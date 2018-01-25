@@ -1,5 +1,7 @@
 package cn.jackro.mvpdemo.presenter.android;
 
+import android.util.Log;
+
 import org.reactivestreams.Subscription;
 
 import java.net.ConnectException;
@@ -44,32 +46,38 @@ public class AndroidPresenter extends BasePresenter {
     @Override
     protected void initData() {
         super.initData();
-        refreshData(0);
+        refreshData(count);
     }
 
-    public void refreshData(int count) {
+    public void refreshData(int androidResultSize) {
         isRefresh = true;
+        count = androidResultSize;
         currentPage = 1;
-        getAndroidResults(count);
+        getAndroidResults();
     }
 
-    public void loadMore(int count) {
+    public void loadMoreData(int androidResultSize) {
         isLoadMore = true;
-        if (currentPage * 20 <= count) {
+        count = androidResultSize;
+
+        Log.e("loadMore", "loadMore: " + currentPage + "::" + count);
+
+        if (canLoadMore()) {
             currentPage++;
-            getAndroidResults(count);
+            getAndroidResults();
         } else {
             mAndroidView.noMoreData();
         }
     }
 
+    private boolean canLoadMore() {
+        return currentPage * 20 <= count;
+    }
+
     /**
      * 获取AndroidResult的list
-     *
-     * @param count 界面上已加载的AndroidResult的数量
      */
-    private void getAndroidResults(int count) {
-        this.count = count;
+    private void getAndroidResults() {
         addDisposable(mAndroidModel.getAndroidResults(currentPage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
