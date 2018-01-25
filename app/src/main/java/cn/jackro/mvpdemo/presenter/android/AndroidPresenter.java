@@ -104,6 +104,7 @@ public class AndroidPresenter extends BasePresenter {
 
     @Override
     protected void onError(Throwable e) {
+        currentPage--;
         super.onError(e);
         if (e instanceof SocketTimeoutException) {
             showError("网络连接超时，请检查网络或稍后再试");
