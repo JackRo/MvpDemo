@@ -37,9 +37,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     // Lifecycles only (no ViewModel or LiveData)
-    implementation 'android.arch.lifecycle:runtime:1.0.3'
+    implementation 'android.arch.lifecycle:runtime:1.1.0'
     // Java8 support for Lifecycles
-    implementation 'android.arch.lifecycle:common-java8:1.0.0'
+    implementation 'android.arch.lifecycle:common-java8:1.1.0'
     //Support lib, Material Design
     implementation "com.android.support:design:${android_support_lib_version}"
     //CardView
